@@ -5,12 +5,18 @@ class AVLNode:
         self.left = None
         self.right = None
 
-    def __str__(self, level=0, prefix="Root: "):
-        ret = "\t" * level + prefix + str(self.key) + "\n"
+    def __str__(self, prefix="Root: ", indent=""):
+        ret = prefix + str(self.key) + "\n"
+        children = []
         if self.left:
-            ret += self.left.__str__(level + 1, "L--- ")
+            children.append(("L: ", self.left))
         if self.right:
-            ret += self.right.__str__(level + 1, "R--- ")
+            children.append(("R: ", self.right))
+        for i, (label, child) in enumerate(children):
+            is_last = (i == len(children) - 1)
+            connector = "└── " if is_last else "├── "
+            extension = "    " if is_last else "│   "
+            ret += child.__str__(indent + connector + label, indent + extension)
         return ret
 
 class AVLTree:
